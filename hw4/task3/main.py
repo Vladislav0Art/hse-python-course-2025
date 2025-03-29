@@ -1,5 +1,6 @@
 from logging import Logger
 from multiprocessing import Queue, Process
+from threading import Thread
 from typing import Callable, Any
 import codecs
 import logging
@@ -15,6 +16,19 @@ def rot13(s: str) -> str:
 
 def lower(s: str) -> str:
     return s.lower()
+
+
+def main_routine(label: str, logger: logging.Logger, input_queue: Queue, output_queue: Queue):
+    try:
+        for line in sys.stdin:
+            line = line.strip()
+            logger.info("[%s]: sending '%s'", label, line)
+            input_queue.put(line)
+
+            transformed_line = output_queue.get()
+            logger.info("[%s]: received '%s'", label, transformed_line)
+    except Exception as e:
+        logger.exception("Exception during communication:", exc_info=e)
 
 
 def process_routine(whoami: str, logger: logging.Logger, input_queue: Queue, output_queue: Queue, transformation: Callable[[str], str]):
@@ -51,20 +65,19 @@ def main(logger: logging.Logger):
 
     processA = Process(target=process_routine, name='A', args=('A', logger, queue_main_A, queue_A_B, lower))
     processB = Process(target=process_routine, name='B', args=('B', logger, queue_A_B, queue_B_main, rot13))
+    communication_thread = Thread(target=main_routine, name='communication',
+                                  args=(label, logger, queue_main_A, queue_B_main))
 
     try:
         processA.start()
         processB.start()
 
-        for line in sys.stdin:
-            line = line.strip()
-            logger.info("[%s]: sending '%s'", label, line)
-            queue_main_A.put(line)
-
-            transformed_line = queue_B_main.get()
-            logger.info("[%s]: received '%s'", label, transformed_line)
+        communication_thread.start()
+        while communication_thread.is_alive():
+            communication_thread.join(timeout=0.1)
     except KeyboardInterrupt as e:
         logger.exception("Received exception during communication:", exc_info=e)
+        communication_thread.join()
     finally:
         # no more events sent by main
         queue_main_A.close()

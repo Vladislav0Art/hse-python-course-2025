@@ -2,7 +2,7 @@
 
 ## Task 4.1
 
-1. The implementation script resides at [](./task1/main.py).
+1. The implementation script resides at [task1/main.py](./task1/main.py).
 2. See the execution log at [artifacts/task1/execution.log](./artifacts/task1/execution.log).
 
 Since the calculation of the Fibonacci function is a CPU-bound problem (not IO-bound), threading does not improve the performance of the sequential approach.

@@ -18,67 +18,68 @@ def lower(s: str) -> str:
     return s.lower()
 
 
-def main_routine(label: str, logger: logging.Logger, input_queue: Queue, output_queue: Queue, run_event: Event):
+def main_routine(logger: logging.Logger, input_queue: Queue, output_queue: Queue, run_event: Event):
     try:
         while run_event.is_set():
             if select.select([sys.stdin], [], [], 0.1)[0]:
                 line = sys.stdin.readline()
                 line = line.strip()
-                logger.info("[%s]: sending '%s'", label, line)
+                logger.info("sending '%s'", line)
                 input_queue.put(line)
 
                 transformed_line = output_queue.get()
-                logger.info("[%s]: received '%s'", label, transformed_line)
+                logger.info("received '%s'", transformed_line)
     except KeyboardInterrupt:
-        logger.info("[%s]: received KeyboardInterrupt", label)
+        logger.info("received KeyboardInterrupt")
     finally:
         # notify no more input will be provided
         input_queue.close()
 
 
-def process_routine(whoami: str, logger: logging.Logger, input_queue: Queue, output_queue: Queue, transformation: Callable[[str], str]):
+def process_routine(whoami: str, log_filepath: str, input_queue: Queue, output_queue: Queue, transformation: Callable[[str], str]):
+    logger = prepare_logger(f"communication-{whoami}", filepath=log_filepath)
     try:
         while True:
             line = input_queue.get()
             if line is None:
-                logger.info("[%s]: read None. Breaking...", whoami)
+                logger.info("read None. Breaking...")
                 break
-            logger.info("[%s]: read '%s'", whoami, line)
+            logger.info("read '%s'", line)
 
             transformed_line = transformation(line)
-            logger.info("[%s]: transformed into '%s'", whoami, line)
-            logger.info("[%s]: sending '%s'", whoami, line)
+            logger.info("transformed into '%s'", transformed_line)
+            logger.info("sending '%s'", transformed_line)
 
             output_queue.put(transformed_line)
             if whoami == 'A':
                 timeout_s = 5
-                logger.info("[%s]: sleeping for %d seconds", whoami, timeout_s)
+                logger.info("sleeping for %d seconds", timeout_s)
                 time.sleep(timeout_s)
-                logger.info("[%s]: woke up!", whoami)
+                logger.info("woke up!")
     except KeyboardInterrupt:
-        logger.info("[%s]: received KeyboardInterrupt", whoami)
+        logger.info("received KeyboardInterrupt")
     finally:
         # notifying that no more events will be sent
-        logger.info("[%s]: stopped", whoami)
+        logger.info("stopped")
         output_queue.close()
 
 
-def main(logger: logging.Logger):
+def main(logger: logging.Logger, log_filepath: str):
     # stdin -> main -> A ->_{lower()} B ->_{rot13} main
     # create processes
     queue_main_A = Queue()
     queue_A_B = Queue()
     queue_B_main = Queue()
 
-    processA = Process(target=process_routine, name='A', args=('A', logger, queue_main_A, queue_A_B, lower))
-    processB = Process(target=process_routine, name='B', args=('B', logger, queue_A_B, queue_B_main, rot13))
+    processA = Process(target=process_routine, name='A', args=('A', log_filepath, queue_main_A, queue_A_B, lower))
+    processB = Process(target=process_routine, name='B', args=('B', log_filepath, queue_A_B, queue_B_main, rot13))
     processA.start()
     processB.start()
 
     run_event = Event()
     run_event.set()
-    communication_thread = Thread(target=main_routine, name='communication',
-                                  args=("communicator", logger, queue_main_A, queue_B_main, run_event))
+    communication_thread = Thread(target=main_routine, name='communicator',
+                                  args=(logger, queue_main_A, queue_B_main, run_event))
     communication_thread.start()
 
     try:
@@ -87,19 +88,20 @@ def main(logger: logging.Logger):
     except KeyboardInterrupt as e:
         label = "main"
         # logger.exception("Received exception during communication:", exc_info=e)
-        logger.exception("[%s]: Received exception during communication", label)
+        logger.exception("received exception during communication")
 
-        logger.info("[%s]: terminating communication thread...", label)
+        logger.info("terminating communication thread...")
         run_event.clear()
         communication_thread.join()
         # terminate subprocesses
-        logger.info("[%s]: terminating processes...", label)
+        logger.info("terminating processes...")
         processA.join()
         processB.join()
+        logger.info("finished")
 
 if __name__ == "__main__":
     artifacts_dir = create_artifacts_dir(dirname="task3")
     log_filepath = os.path.join(artifacts_dir, "execution.log")
 
     logger = prepare_logger("communication", filepath=log_filepath)
-    main(logger)
+    main(logger, log_filepath)

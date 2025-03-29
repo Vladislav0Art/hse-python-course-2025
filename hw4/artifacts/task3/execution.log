@@ -1,0 +1,8 @@
+2025-03-29 23:32:45,963: [process: MainProcess, thread: MainThread] INFO: [main]: sending 'fsdf'
+2025-03-29 23:32:45,969: [process: MainProcess, thread: MainThread] INFO: [main]: received 'sfqs'
+2025-03-29 23:33:05,350: [process: MainProcess, thread: MainThread] ERROR: Received exception during communication:
+Traceback (most recent call last):
+  File "/Users/vartiukhov/dev/studies/hse/2025/python/hw4/task3/main.py", line 59, in main
+    for line in sys.stdin:
+                ^^^^^^^^^
+KeyboardInterrupt

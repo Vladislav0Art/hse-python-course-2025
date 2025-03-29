@@ -1,7 +1,10 @@
+import os
 from typing import Any, Generator
 
 import numpy as np
-from matrix import Matrix
+
+from hw3.utils import create_artifacts_dir, save_at
+from matrix import Matrix, save_matrix
 
 
 def has_collision(a: Matrix, b: Matrix) -> bool:
@@ -63,19 +66,40 @@ def main():
         raise ValueError("No collisions found")
 
     B = None
+    D = None
     for b in matrices:
         # B is just the same as D, so we only search for B
         if b != A and b != C and (A @ b != C @ b):
             # equivalent to `(B == D) and (A @ B != C @ D)`
-            B = b
+            B = D = b
             break
 
-    if B is None:
-        raise ValueError("No B found")
+    if B is None or D is None:
+        raise ValueError("No B or D found")
 
+    # save found matrices into txt-files
+    artifacts_dir = create_artifacts_dir(dirname="task3")
 
+    # save A, B, C, D
+    save_matrix(A, artifacts_dir, "A.txt")
+    save_matrix(B, artifacts_dir, "B.txt")
+    save_matrix(C, artifacts_dir, "C.txt")
+    save_matrix(D, artifacts_dir, "D.txt")
 
+    # save products
+    AB = A @ B
+    CD = C @ D
+    save_matrix(AB, artifacts_dir, "AB.txt")
+    save_matrix(CD, artifacts_dir, "CD.txt")
 
+    # save hash
+    content = f"""A's hash: {hash(A)}
+B's hash: {hash(B)}
+C's hash: {hash(C)}
+AB's hash: {hash(AB)}
+CD's hash: {hash(CD)}
+"""
+    save_at(content, artifacts_dir, filename="hash.txt")
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,11 @@
 import logging
+import os.path
 import threading
 import multiprocessing
 import time
+
+from hw4.utils import create_artifacts_dir
+
 
 def measure_execution_time(block, *args, **kwargs):
     start_time = time.time()
@@ -81,8 +85,15 @@ def main(n: int, times: int):
 
 
 if __name__ == "__main__":
+    artifacts_dir = create_artifacts_dir(dirname="task1")
+    log_filepath = os.path.join(artifacts_dir, "execution.log")
+
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s: [process: %(processName)s, thread: %(threadName)s] %(levelname)s: %(message)s"
+        format="%(asctime)s: [process: %(processName)s, thread: %(threadName)s] %(levelname)s: %(message)s",
+        handlers=[
+            logging.StreamHandler(),
+            logging.FileHandler(log_filepath)
+        ]
     )
     main(n=300_000, times=10)

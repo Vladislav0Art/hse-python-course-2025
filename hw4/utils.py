@@ -1,5 +1,17 @@
 import os
 import logging
+import time
+
+
+def measure_execution_time(block, *args, **kwargs):
+    start_time = time.time()
+    block(*args, **kwargs)
+    end_time = time.time()
+
+    elapsed_time = end_time - start_time
+    return elapsed_time
+
+
 
 def create_artifacts_dir(dirname: str) -> str:
     cur_dir = os.path.dirname(os.path.abspath(__file__))
@@ -7,7 +19,6 @@ def create_artifacts_dir(dirname: str) -> str:
     os.makedirs(artifacts_dir, exist_ok=True)
 
     return artifacts_dir
-
 
 
 def prepare_logger(logger_name: str, filepath: str) -> logging.Logger:

@@ -2,18 +2,8 @@ import logging
 import os.path
 import threading
 import multiprocessing
-import time
 
-from hw4.utils import create_artifacts_dir, prepare_logger
-
-
-def measure_execution_time(block, *args, **kwargs):
-    start_time = time.time()
-    block(*args, **kwargs)
-    end_time = time.time()
-
-    elapsed_time = end_time - start_time
-    return elapsed_time
+from hw4.utils import create_artifacts_dir, prepare_logger, measure_execution_time
 
 
 def fibonacci(n: int) -> int:

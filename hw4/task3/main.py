@@ -24,11 +24,12 @@ def main_routine(logger: logging.Logger, input_queue: Queue, output_queue: Queue
             if select.select([sys.stdin], [], [], 0.1)[0]:
                 line = sys.stdin.readline()
                 line = line.strip()
-                logger.info("sending '%s'", line)
+                logger.info("read '%s' from stdin", line)
+                logger.info("sending '%s' to A", line)
                 input_queue.put(line)
 
                 transformed_line = output_queue.get()
-                logger.info("received '%s'", transformed_line)
+                logger.info("received '%s' from B", transformed_line)
     except KeyboardInterrupt:
         logger.info("received KeyboardInterrupt")
     finally:

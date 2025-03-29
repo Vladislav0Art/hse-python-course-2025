@@ -1,0 +1,93 @@
+2025-03-30 00:19:29,617: [process: MainProcess, thread: communicator] INFO: read 'HELLO WORLD!' from stdin
+2025-03-30 00:19:29,618: [process: MainProcess, thread: communicator] INFO: sending 'HELLO WORLD!' to A
+2025-03-30 00:19:29,620: [process: A, thread: MainThread] INFO: read 'HELLO WORLD!'
+2025-03-30 00:19:29,620: [process: A, thread: MainThread] INFO: transformed into 'hello world!'
+2025-03-30 00:19:29,621: [process: A, thread: MainThread] INFO: sending 'hello world!'
+2025-03-30 00:19:29,621: [process: A, thread: MainThread] INFO: sleeping for 5 seconds
+2025-03-30 00:19:29,622: [process: B, thread: MainThread] INFO: read 'hello world!'
+2025-03-30 00:19:29,623: [process: B, thread: MainThread] INFO: transformed into 'uryyb jbeyq!'
+2025-03-30 00:19:29,623: [process: B, thread: MainThread] INFO: sending 'uryyb jbeyq!'
+2025-03-30 00:19:29,624: [process: MainProcess, thread: communicator] INFO: received 'uryyb jbeyq!' from B
+2025-03-30 00:19:33,746: [process: MainProcess, thread: communicator] INFO: read 'EXECUTION' from stdin
+2025-03-30 00:19:33,746: [process: MainProcess, thread: communicator] INFO: sending 'EXECUTION' to A
+2025-03-30 00:19:34,624: [process: A, thread: MainThread] INFO: woke up!
+2025-03-30 00:19:34,625: [process: A, thread: MainThread] INFO: read 'EXECUTION'
+2025-03-30 00:19:34,625: [process: A, thread: MainThread] INFO: transformed into 'execution'
+2025-03-30 00:19:34,625: [process: A, thread: MainThread] INFO: sending 'execution'
+2025-03-30 00:19:34,626: [process: A, thread: MainThread] INFO: sleeping for 5 seconds
+2025-03-30 00:19:34,626: [process: B, thread: MainThread] INFO: read 'execution'
+2025-03-30 00:19:34,626: [process: B, thread: MainThread] INFO: transformed into 'rkrphgvba'
+2025-03-30 00:19:34,626: [process: B, thread: MainThread] INFO: sending 'rkrphgvba'
+2025-03-30 00:19:34,627: [process: MainProcess, thread: communicator] INFO: received 'rkrphgvba' from B
+2025-03-30 00:19:37,652: [process: MainProcess, thread: communicator] INFO: read 'QWERTY' from stdin
+2025-03-30 00:19:37,653: [process: MainProcess, thread: communicator] INFO: sending 'QWERTY' to A
+2025-03-30 00:19:39,627: [process: A, thread: MainThread] INFO: woke up!
+2025-03-30 00:19:39,627: [process: A, thread: MainThread] INFO: read 'QWERTY'
+2025-03-30 00:19:39,628: [process: A, thread: MainThread] INFO: transformed into 'qwerty'
+2025-03-30 00:19:39,628: [process: A, thread: MainThread] INFO: sending 'qwerty'
+2025-03-30 00:19:39,628: [process: A, thread: MainThread] INFO: sleeping for 5 seconds
+2025-03-30 00:19:39,628: [process: B, thread: MainThread] INFO: read 'qwerty'
+2025-03-30 00:19:39,629: [process: B, thread: MainThread] INFO: transformed into 'djregl'
+2025-03-30 00:19:39,629: [process: B, thread: MainThread] INFO: sending 'djregl'
+2025-03-30 00:19:39,629: [process: MainProcess, thread: communicator] INFO: received 'djregl' from B
+2025-03-30 00:19:44,630: [process: A, thread: MainThread] INFO: woke up!
+2025-03-30 00:19:46,346: [process: MainProcess, thread: communicator] INFO: read '123_123_HELLO_WORLD' from stdin
+2025-03-30 00:19:46,346: [process: MainProcess, thread: communicator] INFO: sending '123_123_HELLO_WORLD' to A
+2025-03-30 00:19:46,347: [process: A, thread: MainThread] INFO: read '123_123_HELLO_WORLD'
+2025-03-30 00:19:46,347: [process: A, thread: MainThread] INFO: transformed into '123_123_hello_world'
+2025-03-30 00:19:46,347: [process: A, thread: MainThread] INFO: sending '123_123_hello_world'
+2025-03-30 00:19:46,347: [process: A, thread: MainThread] INFO: sleeping for 5 seconds
+2025-03-30 00:19:46,347: [process: B, thread: MainThread] INFO: read '123_123_hello_world'
+2025-03-30 00:19:46,348: [process: B, thread: MainThread] INFO: transformed into '123_123_uryyb_jbeyq'
+2025-03-30 00:19:46,348: [process: B, thread: MainThread] INFO: sending '123_123_uryyb_jbeyq'
+2025-03-30 00:19:46,348: [process: MainProcess, thread: communicator] INFO: received '123_123_uryyb_jbeyq' from B
+2025-03-30 00:19:51,352: [process: A, thread: MainThread] INFO: woke up!
+2025-03-30 00:20:09,020: [process: MainProcess, thread: communicator] INFO: read 'ABCDEFGH' from stdin
+2025-03-30 00:20:09,021: [process: MainProcess, thread: communicator] INFO: sending 'ABCDEFGH' to A
+2025-03-30 00:20:09,021: [process: A, thread: MainThread] INFO: read 'ABCDEFGH'
+2025-03-30 00:20:09,022: [process: A, thread: MainThread] INFO: transformed into 'abcdefgh'
+2025-03-30 00:20:09,022: [process: A, thread: MainThread] INFO: sending 'abcdefgh'
+2025-03-30 00:20:09,022: [process: A, thread: MainThread] INFO: sleeping for 5 seconds
+2025-03-30 00:20:09,022: [process: B, thread: MainThread] INFO: read 'abcdefgh'
+2025-03-30 00:20:09,023: [process: B, thread: MainThread] INFO: transformed into 'nopqrstu'
+2025-03-30 00:20:09,023: [process: B, thread: MainThread] INFO: sending 'nopqrstu'
+2025-03-30 00:20:09,023: [process: MainProcess, thread: communicator] INFO: received 'nopqrstu' from B
+2025-03-30 00:20:12,924: [process: MainProcess, thread: communicator] INFO: read 'abcd' from stdin
+2025-03-30 00:20:12,925: [process: MainProcess, thread: communicator] INFO: sending 'abcd' to A
+2025-03-30 00:20:14,026: [process: A, thread: MainThread] INFO: woke up!
+2025-03-30 00:20:14,026: [process: A, thread: MainThread] INFO: read 'abcd'
+2025-03-30 00:20:14,027: [process: A, thread: MainThread] INFO: transformed into 'abcd'
+2025-03-30 00:20:14,027: [process: A, thread: MainThread] INFO: sending 'abcd'
+2025-03-30 00:20:14,027: [process: A, thread: MainThread] INFO: sleeping for 5 seconds
+2025-03-30 00:20:14,027: [process: B, thread: MainThread] INFO: read 'abcd'
+2025-03-30 00:20:14,028: [process: B, thread: MainThread] INFO: transformed into 'nopq'
+2025-03-30 00:20:14,028: [process: B, thread: MainThread] INFO: sending 'nopq'
+2025-03-30 00:20:14,028: [process: MainProcess, thread: communicator] INFO: received 'nopq' from B
+2025-03-30 00:20:19,029: [process: A, thread: MainThread] INFO: woke up!
+2025-03-30 00:20:19,180: [process: MainProcess, thread: communicator] INFO: read 'abcdfgh' from stdin
+2025-03-30 00:20:19,180: [process: MainProcess, thread: communicator] INFO: sending 'abcdfgh' to A
+2025-03-30 00:20:19,181: [process: A, thread: MainThread] INFO: read 'abcdfgh'
+2025-03-30 00:20:19,181: [process: A, thread: MainThread] INFO: transformed into 'abcdfgh'
+2025-03-30 00:20:19,181: [process: A, thread: MainThread] INFO: sending 'abcdfgh'
+2025-03-30 00:20:19,181: [process: A, thread: MainThread] INFO: sleeping for 5 seconds
+2025-03-30 00:20:19,182: [process: B, thread: MainThread] INFO: read 'abcdfgh'
+2025-03-30 00:20:19,182: [process: B, thread: MainThread] INFO: transformed into 'nopqstu'
+2025-03-30 00:20:19,182: [process: B, thread: MainThread] INFO: sending 'nopqstu'
+2025-03-30 00:20:19,182: [process: MainProcess, thread: communicator] INFO: received 'nopqstu' from B
+2025-03-30 00:20:24,182: [process: A, thread: MainThread] INFO: woke up!
+2025-03-30 00:20:24,712: [process: A, thread: MainThread] INFO: received KeyboardInterrupt
+2025-03-30 00:20:24,712: [process: B, thread: MainThread] INFO: received KeyboardInterrupt
+2025-03-30 00:20:24,712: [process: A, thread: MainThread] INFO: stopped
+2025-03-30 00:20:24,712: [process: B, thread: MainThread] INFO: stopped
+2025-03-30 00:20:24,712: [process: MainProcess, thread: MainThread] ERROR: received exception during communication
+Traceback (most recent call last):
+  File "/Users/vartiukhov/dev/studies/hse/2025/python/hw4/task3/main.py", line 88, in main
+    communication_thread.join(timeout=0.1)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/threading.py", line 1092, in join
+    self._handle.join(timeout)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyboardInterrupt
+2025-03-30 00:20:24,714: [process: MainProcess, thread: MainThread] INFO: terminating communication thread...
+2025-03-30 00:20:24,778: [process: MainProcess, thread: MainThread] INFO: terminating processes...
+2025-03-30 00:20:24,778: [process: MainProcess, thread: MainThread] INFO: finished

@@ -1,10 +1,30 @@
 import numpy as np
+import os
 
-class Matrix:
+
+class MatrixHashMixin:
     _HASH_FIELD_SIZE_MODULO = 13
-    _HASH_MULT_COEFF = 3
-    _HASH_ADD_COEFF = 1
+    _HASH_MULT_COEF = 3
+    _HASH_ADD_COEF = 5
 
+    def __hash__(self) -> int:
+        """
+        calculate the hash using the formula (a * sum + b) % p
+        where `sum` is the sum of all elements in the matrix, `a` and `b` are constants defined above.
+
+        The resulting hash is a field element Z_p of power `_HASH_FIELD_SIZE_MODULO`.
+        It makes it easier to find a collision.
+
+        :return: hash value of the given matrix
+        """
+        if not isinstance(self, Matrix):
+            raise TypeError(f"can only hash Matrix objects, received {type(self).__name__}")
+
+        sum_ = sum(self.data.flat)
+        return int((self._HASH_MULT_COEF * sum_ + self._HASH_ADD_COEF) % self._HASH_FIELD_SIZE_MODULO)
+
+
+class Matrix(MatrixHashMixin):
     def __init__(self, data):
         """
         Args:
@@ -90,13 +110,13 @@ class Matrix:
 
         return Matrix(self.data @ other.data)
 
-    def __hash__(self) -> int:
-        # calculate the hash using the formula (a * sum + b) % p
-        sum_ = sum(self.data.flat)
-        return int((self._HASH_MULT_COEFF * sum_ + self._HASH_ADD_COEFF) % self._HASH_FIELD_SIZE_MODULO)
+
+def save_matrix(m: Matrix, artifacts_dir: str, filename: str):
+    with open(os.path.join(artifacts_dir, filename), "w") as f:
+        f.write(str(m))
 
 
-if __name__ == "__main__":
+def main():
     np.random.seed(0)
 
     matrix_a = Matrix(np.random.randint(0, 10, (10, 10)))
@@ -110,6 +130,7 @@ if __name__ == "__main__":
     matrix_mult_result = matrix_a @ matrix_b
 
     # we dynamically store the result into artifacts folder, not to do it manually
+    # TODO: replace with create_artifacts_dir
     import os
     script_dir = os.path.dirname(os.path.abspath(__file__))
     artifacts_dir = os.path.join(script_dir, "..", "artifacts", "task1")
@@ -128,3 +149,7 @@ if __name__ == "__main__":
         f.write(str(matrix_mult_result))
 
     print("Operations completed and results saved to text files.")
+
+
+if __name__ == "__main__":
+    main()

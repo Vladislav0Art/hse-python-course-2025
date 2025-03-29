@@ -1,6 +1,10 @@
 import numpy as np
 
 class Matrix:
+    _HASH_FIELD_SIZE_MODULO = 13
+    _HASH_MULT_COEFF = 3
+    _HASH_ADD_COEFF = 1
+
     def __init__(self, data):
         """
         Args:
@@ -85,6 +89,11 @@ class Matrix:
             raise ValueError(f"cannot matrix-multiply matrices of shapes {self.shape} and {other.shape}")
 
         return Matrix(self.data @ other.data)
+
+    def __hash__(self) -> int:
+        # calculate the hash using the formula (a * sum + b) % p
+        sum_ = sum(self.data.flat)
+        return int((self._HASH_MULT_COEFF * sum_ + self._HASH_ADD_COEFF) % self._HASH_FIELD_SIZE_MODULO)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,8 @@
 import numpy as np
 import os
 
+from hw3.utils import save_at, create_artifacts_dir
+
 
 class MatrixHashMixin:
     _HASH_FIELD_SIZE_MODULO = 13
@@ -112,8 +114,8 @@ class Matrix(MatrixHashMixin):
 
 
 def save_matrix(m: Matrix, artifacts_dir: str, filename: str):
-    with open(os.path.join(artifacts_dir, filename), "w") as f:
-        f.write(str(m))
+    """Saves matrix to a file."""
+    save_at(content=str(m), artifacts_dir=artifacts_dir, filename=filename)
 
 
 def main():
@@ -130,23 +132,12 @@ def main():
     matrix_mult_result = matrix_a @ matrix_b
 
     # we dynamically store the result into artifacts folder, not to do it manually
-    # TODO: replace with create_artifacts_dir
-    import os
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    artifacts_dir = os.path.join(script_dir, "..", "artifacts", "task1")
-    os.makedirs(artifacts_dir, exist_ok=True)
+    artifacts_dir = create_artifacts_dir(dirname="task1")
 
-    # addition result
-    with open(os.path.join(artifacts_dir, "matrix+.txt"), "w") as f:
-        f.write(str(addition_result))
-
-    # multiplication result (elem-wise)
-    with open(os.path.join(artifacts_dir, "matrix_mult.txt"), "w") as f:
-        f.write(str(element_wise_mult_result))
-
-    # multiplication result (normal matrix multiplication)
-    with open(os.path.join(artifacts_dir, "matrix@.txt"), "w") as f:
-        f.write(str(matrix_mult_result))
+    # save matrices into files
+    save_matrix(addition_result, artifacts_dir, "matrix+.txt")
+    save_matrix(element_wise_mult_result, artifacts_dir, "matrix_mult.txt")
+    save_matrix(matrix_mult_result, artifacts_dir, "matrix@.txt")
 
     print("Operations completed and results saved to text files.")
 

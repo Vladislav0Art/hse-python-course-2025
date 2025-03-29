@@ -4,7 +4,7 @@ import threading
 import multiprocessing
 import time
 
-from hw4.utils import create_artifacts_dir
+from hw4.utils import create_artifacts_dir, prepare_logger
 
 
 def measure_execution_time(block, *args, **kwargs):
@@ -65,7 +65,7 @@ def execute_sequential(n: int, count: int) -> None:
         fibonacci(n)
 
 
-def main(n: int, times: int):
+def main(logger: logging.Logger, n: int, times: int):
     # function, tag
     executions = [
         (execute_sequential, "execute_sequential"),
@@ -73,27 +73,17 @@ def main(n: int, times: int):
         (execute_processes, "execute_processes"),
     ]
 
-    logging.info("Running fibonacci(%d) %d times in %d different scenarios", n, times, len(executions))
+    logger.info("Running fibonacci(%d) %d times in %d different scenarios", n, times, len(executions))
 
     for execution in executions:
         function, tag = execution
-        # logging.info("Running %s", tag)
-
         time_elapsed_s = measure_execution_time(function, n, times)
-        # logging.info("Execution time for '%s': %.6f seconds", block.__name__, elapsed_time)
-        logging.info("[%s] fibonacci(%d) required: %.6f seconds", tag, n, time_elapsed_s)
+        logger.info("[%s] fibonacci(%d) required: %.6f seconds", tag, n, time_elapsed_s)
 
 
 if __name__ == "__main__":
     artifacts_dir = create_artifacts_dir(dirname="task1")
     log_filepath = os.path.join(artifacts_dir, "execution.log")
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s: [process: %(processName)s, thread: %(threadName)s] %(levelname)s: %(message)s",
-        handlers=[
-            logging.StreamHandler(),
-            logging.FileHandler(log_filepath)
-        ]
-    )
-    main(n=300_000, times=10)
+    logger = prepare_logger(logger_name="fibonacci", filepath=log_filepath)
+    main(logger, n=300_000, times=10)

@@ -103,7 +103,7 @@ if __name__ == "__main__":
     # we dynamically store the result into artifacts folder, not to do it manually
     import os
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    artifacts_dir = os.path.join(script_dir, "artifacts")
+    artifacts_dir = os.path.join(script_dir, "..", "artifacts", "task1")
     os.makedirs(artifacts_dir, exist_ok=True)
 
     # addition result
@@ -111,7 +111,7 @@ if __name__ == "__main__":
         f.write(str(addition_result))
 
     # multiplication result (elem-wise)
-    with open(os.path.join(artifacts_dir, "matrix*.txt"), "w") as f:
+    with open(os.path.join(artifacts_dir, "matrix_mult.txt"), "w") as f:
         f.write(str(element_wise_mult_result))
 
     # multiplication result (normal matrix multiplication)

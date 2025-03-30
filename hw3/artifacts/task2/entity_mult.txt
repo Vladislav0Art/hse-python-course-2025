@@ -1,0 +1,9 @@
+Entity(
+	"data": [[15  0  9 15  0]
+ [18  9 40  2 12]
+ [21 18 56  0  1]
+ [54 63  0 32  7]
+ [15 18 56 18  0]],
+	"operation": multiplication,
+	"description": element-wise product of Entity A and Entity B,
+)

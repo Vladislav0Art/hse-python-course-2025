@@ -60,7 +60,7 @@ def main(logger: logging.Logger):
     CLI utility script that parses arguments and starts downloading process
     """
     parser = argparse.ArgumentParser(description='Download images from picsum.photos asynchronously')
-    parser.add_argument('-n', '--num_images', type=int, required=True, help='Number of images to download')
+    parser.add_argument('-n', '--num_images', type=int, required=True, default=1, help='Number of images to download')
     parser.add_argument('-f', '--filepath', type=str, required=True, help='Directory where images will be saved')
 
     args = parser.parse_args()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import asyncio
+import aiofiles
 import logging
 
 import aiohttp
@@ -10,6 +11,10 @@ from pathlib import Path
 from hw5.utils import prepare_logger
 from hw5.utils import create_artifacts_dir
 
+
+async def save_file(path: Path, data):
+    async with aiofiles.open(path, 'wb') as f:
+        await f.write(data)
 
 async def download_image(logger: logging.Logger, session: aiohttp.ClientSession, image_id: int, save_path: Path) -> None:
     """
@@ -27,8 +32,7 @@ async def download_image(logger: logging.Logger, session: aiohttp.ClientSession,
                 image_data = await response.read()
                 # save in file
                 image_path = save_path / f"image_{image_id}.jpg"
-                with open(image_path, 'wb') as f:
-                    f.write(image_data)
+                await save_file(image_path, image_data)
                 logger.info(f"Downloaded image {image_id} to {image_path}")
             else:
                 logger.error(f"Failed to download image {image_id}. Status code: {response.status}")

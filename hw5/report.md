@@ -18,6 +18,12 @@ python -m hw5.task1.script -n 5 -f hw5/artifacts/task1/images
 1. The implementation resides at [task2/main.py](task2/main.py).
 2. See the execution log at [artifacts/task2/execution.log](artifacts/task2/execution.log) and JSON file with the scraped data in [artifacts/task2/recommendations/result.json](artifacts/task2/recommendations/result.json).
 
+Example how to run the script:
+```
+cd path/to/repository/root
+python -m hw5.task2.main -n 5 -f hw5/artifacts/task2/recommendations
+```
+
 ## Task 5.3
 
 tbd

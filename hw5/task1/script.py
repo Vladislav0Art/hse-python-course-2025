@@ -80,5 +80,5 @@ if __name__ == "__main__":
     artifacts_dir = create_artifacts_dir(dirname="task1")
     log_filepath = os.path.join(artifacts_dir, "execution.log")
 
-    logger = prepare_logger(logger_name="fibonacci", filepath=log_filepath)
+    logger = prepare_logger(logger_name="image-downloading", filepath=log_filepath)
     main(logger)

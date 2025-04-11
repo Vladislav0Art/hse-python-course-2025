@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import argparse
 import asyncio
 import logging
 import os
+import json
 from dataclasses import dataclass
 from typing import Union
 
@@ -22,11 +24,14 @@ class Recommendation:
     apartment_address: str | None = None
 
 
-async def save_file(path: Path, data):
-    async with aiofiles.open(path, 'wb') as f:
-        await f.write(data)
+async def save_file(path: Path, recommendations: list[Recommendation]):
+    async with aiofiles.open(path, 'w', encoding='utf-8') as f:
+        json_rec = json.dumps([rec.__dict__ for rec in recommendations], indent=4, ensure_ascii=False)
+        await f.write(json_rec)
 
-async def parse_recommendation(recommendation) -> Union[Recommendation, None]:
+
+async def parse_recommendation(logger, recommendation, i: int) -> Union[Recommendation, None]:
+    logger.info(f"Parsing recommendation {i}")
     link_area = recommendation.find('div', {'data-name': 'LinkArea'})
     if link_area is None:
         return None
@@ -51,7 +56,6 @@ async def parse_recommendation(recommendation) -> Union[Recommendation, None]:
 
 
 async def scrap_info(logger: logging.Logger, num_recommendations: int, save_path: Path) -> None:
-    save_path.mkdir(parents=True, exist_ok=True)
     url = "https://www.cian.ru/recommendations/"
 
     async with aiohttp.ClientSession() as session:
@@ -60,19 +64,16 @@ async def scrap_info(logger: logging.Logger, num_recommendations: int, save_path
                 if response.status == 200:
                     data = await response.text(encoding='utf-8')
                     soup = BeautifulSoup(data, 'html.parser')
-                    answer = []
                     recommendations = soup.find_all('div', {'data-name': 'RecommendationsContainer'})
+                    tasks = [
+                        parse_recommendation(logger, recommendation, i)
+                        for i, recommendation in enumerate(recommendations[:num_recommendations])
+                    ]
+                    results = (await asyncio.gather(*tasks))
+                    answer = [rec for rec in results if rec is not None]
 
-                    for recommendation in recommendations:
-                        if len(answer) >= num_recommendations:
-                            break
-                        rec: Union[Recommendation, None] = await parse_recommendation(recommendation)
-                        if rec is not None:
-                            answer.append(rec)
-
-                    print(answer)
-                    # await save_file(image_path, image_data)
-                    # logger.info(f"Downloaded image {image_id} to {image_path}")
+                    await save_file(save_path, answer)
+                    logger.info(f"Downloaded {num_recommendations} recommendations into {save_path}")
                 else:
                     logger.error(f"Failed to extract data from '{url}': {response.status}, {await response.text()}")
         except Exception as e:
@@ -81,17 +82,27 @@ async def scrap_info(logger: logging.Logger, num_recommendations: int, save_path
 
 
 def main(logger: logging.Logger):
-    num_recommendations = 10
-    # TODO: replace
-    filepath = "/Users/vartiukhov/dev/studies/hse/2025/python/hw5/artifacts/task2/images"
-    save_path = Path(filepath)
+    parser = argparse.ArgumentParser(description='Download recommendations from cian asynchronously')
+    parser.add_argument('-n', '--num_recommendations', type=int, required=True, default=1, help='Number of recommendations to scrap')
+    parser.add_argument('-f', '--dirpath', type=str, required=True, help='Directory where images will be saved')
+
+    args = parser.parse_args()
+    logger.info(f"Downloading {args.num_recommendations} recommendations into {args.dirpath}")
+
+    num_recommendations = args.num_recommendations
+
+    dirpath = Path(args.dirpath)
+    dirpath.mkdir(parents=True, exist_ok=True)
+    save_path = dirpath / "result.json"
     # start scrapping
     asyncio.run(scrap_info(logger, num_recommendations, save_path))
 
+
+
 if __name__ == "__main__":
-    # example: `python -m hw5.task2.main`
-    artifacts_dir = create_artifacts_dir(dirname="task1")
+    # example: `python -m hw5.task2.main -n 5 -f hw5/artifacts/task2/recommendations`
+    artifacts_dir = create_artifacts_dir(dirname="task2")
     log_filepath = os.path.join(artifacts_dir, "execution.log")
 
-    logger = prepare_logger(logger_name="fibonacci", filepath=log_filepath)
+    logger = prepare_logger(logger_name="cian-scraping", filepath=log_filepath)
     main(logger)

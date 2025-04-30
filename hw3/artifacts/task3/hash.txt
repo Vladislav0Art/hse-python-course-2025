@@ -1,0 +1,5 @@
+A's hash: 4
+B's hash: 7
+C's hash: 4
+AB's hash: 9
+CD's hash: 7

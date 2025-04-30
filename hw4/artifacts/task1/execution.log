@@ -1,0 +1,4 @@
+2025-03-29 22:08:49,944: [process: MainProcess, thread: MainThread] INFO: Running fibonacci(300000) 10 times in 3 different scenarios
+2025-03-29 22:08:58,006: [process: MainProcess, thread: MainThread] INFO: [execute_sequential] fibonacci(300000) required: 8.061871 seconds
+2025-03-29 22:09:05,978: [process: MainProcess, thread: MainThread] INFO: [execute_threads] fibonacci(300000) required: 7.971762 seconds
+2025-03-29 22:09:06,957: [process: MainProcess, thread: MainThread] INFO: [execute_processes] fibonacci(300000) required: 0.979481 seconds
